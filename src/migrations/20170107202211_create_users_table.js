@@ -5,7 +5,7 @@
  * @return {Promise}
  */
 export function up(knex) {
-  return knex.schema.createTable('auth.auth_users', table => {
+  return knex.schema.createTable('auth_users', table => {
     table.uuid('id');
     table
       .timestamp('created_at')

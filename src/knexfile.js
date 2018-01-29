@@ -6,7 +6,7 @@ require('dotenv').config({ path: __dirname + '/../.env' });
  */
 module.exports = {
   client: process.env.DB_CLIENT,
-  searchPath: 'auth',
+  searchPath: process.env.DB_SCHEMA,
   connection: {
     port: process.env.DB_PORT,
     host: process.env.DB_HOST,
