@@ -6,7 +6,7 @@
  */
 export function up(knex) {
   return knex.schema.createTable('auth_users', table => {
-    table.uuid('id');
+    table.uuid('id').primary();
     table
       .timestamp('created_at')
       .notNull()
