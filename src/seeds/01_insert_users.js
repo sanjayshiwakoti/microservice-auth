@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4';
 /**
  * Seed users table.
  *
@@ -7,18 +8,17 @@
  */
 export function seed(knex, Promise) {
   // Deletes all existing entries
-  return knex('users')
+  return knex('auth_users')
     .del()
     .then(() => {
       return Promise.all([
         // Inserts seed entries
-        knex('users').insert([
+        knex('auth_users').insert([
           {
-            name: 'Saugat Acharya',
-            updated_at: new Date()
-          },
-          {
-            name: 'John Doe',
+            id: uuid(),
+            username: 'rosia',
+            password: 'rosia',
+            created_at: new Date(),
             updated_at: new Date()
           }
         ])

@@ -54,6 +54,7 @@
     "pg": "^7.3.0",
     "serve-favicon": "^2.4.3",
     "swagger-jsdoc": "^1.9.4",
+    "uuid": "^3.2.1",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^1.4.6"
   },
