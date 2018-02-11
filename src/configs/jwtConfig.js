@@ -1,5 +1,5 @@
 export const ACCESS_TOKEN_CONFIG = {
-  expiresIn: 600,
+  expiresIn: '365d',
   issuer: 'ISO'
 };
 
