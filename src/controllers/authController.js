@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import HttpStatus from 'http-status-codes';
 import * as authService from '../services/authService';
 
 const router = Router();
@@ -20,7 +19,7 @@ router.post('/login', async (req, res, next) => {
  * Validate access token.
  */
 router.post('/authenticate', (req, res, next) => {
-  res.json({ data: authService.verifyAccessToken(req.get('Authorization')) });
+  res.json({ data: authService.verifyAccessToken(req.body.accessToken) });
 });
 
 /**
