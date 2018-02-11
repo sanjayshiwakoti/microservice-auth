@@ -1,18 +1,20 @@
 import bookshelf from '../db';
+import Session from './Session';
 
 const TABLE_NAME = 'auth_users';
 
 /**
  * User model.
  */
-class User extends bookshelf.Model {
-  get tableName() {
-    return TABLE_NAME;
-  }
 
-  get hasTimestamps() {
-    return true;
+let User = bookshelf.Model.extend({
+  tableName: TABLE_NAME,
+
+  hasTimestamps: true,
+
+  sessions: function() {
+    return this.hasMany(Session);
   }
-}
+});
 
 export default User;
