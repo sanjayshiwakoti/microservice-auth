@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-const SALT_ROUND = 10;
+const SALT_ROUND = process.env.SALT_ROUND;
 
 export function hashText(plainText) {
   return bcrypt.hashSync(plainText, SALT_ROUND);
