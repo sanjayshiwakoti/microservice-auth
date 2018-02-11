@@ -15,7 +15,7 @@ export function seed(knex, Promise) {
         {
           id: uuid(),
           username: 'rosia',
-          password: 'rosia',
+          password: '$2a$10$.wM5qSPpvqSE7uMnO7YFVuZxrPu/6W9X2X4tCEXF1hhypE0vp2fam',
           created_at: new Date(),
           updated_at: new Date()
         }
