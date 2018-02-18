@@ -25,9 +25,11 @@ router.post('/authenticate', (req, res, next) => {
 /**
  * Regenerate new pair of access and refresh token.
  */
-router.post('/refresh-token', (req, res, next) => {
+router.post('/access-token', (req, res, next) => {
+  // TODO NOT WORKING
   try {
     let data = authService.getNewAccessAndRefreshToken(req.body.refreshToken);
+    //    console.log('refreshToken: ', data.refreshToken);
     res.json({ data });
   } catch (error) {
     next(error);
