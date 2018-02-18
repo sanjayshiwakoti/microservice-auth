@@ -8,6 +8,8 @@ export function up(knex) {
   return knex.schema.createTable('auth_sessions', sessionTable => {
     sessionTable.uuid('id').primary();
 
+    sessionTable.uuid('user_id').notNullable();
+
     sessionTable.string('refresh_token', 255).notNullable();
 
     sessionTable.integer('expire_time', 15).notNullable();
@@ -17,17 +19,14 @@ export function up(knex) {
       .notNullable()
       .defaultTo(true);
 
-    sessionTable
-      .dateTime('created_at')
-      .notNullable()
-      .default(knex.fn.now());
+    sessionTable.timestamp('created_at').notNullable();
 
     sessionTable.timestamp('updated_at');
 
     sessionTable
-      .uuid('created_by')
-      .notNullable()
-      .references('auth_users.id');
+      .foreign('user_id')
+      .references('id')
+      .on('auth_users');
   });
 }
 
