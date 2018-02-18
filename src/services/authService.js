@@ -18,8 +18,8 @@ export async function validateLogin(username, password) {
   }
 
   if (hashUtils.compare(password, user.get('password'))) {
-    let responsePayload = getAccessAndRefreshTokens(user);
-    sessionService.createSession(responsePayload, user);
+    let responsePayload = getAccessAndRefreshTokens(user.get('id'));
+    sessionService.saveSession(responsePayload, user.get('id'));
 
     return responsePayload;
   } else {
@@ -31,8 +31,10 @@ export async function validateLogin(username, password) {
  * Validate access token.
  * @param {string} accessToken
  */
-export function verifyAccessToken(accessToken) {
-  return verifyToken(accessToken, jwtConfigs.SECRET_ACCESS_KEY);
+export function verifyAccessToken(tokenWithPrefix) {
+  let token = tokenWithPrefix.split(' ')[1];
+
+  return verifyToken(token, jwtConfigs.SECRET_ACCESS_KEY);
 }
 
 /**
@@ -47,25 +49,32 @@ export function verifyRefreshToken(refreshToken) {
  * Generate new pair of access and refresh token.
  * @param {string} refreshToken
  */
-export function getNewAccessAndRefreshToken(refreshToken) {
-  let userId = verifyRefreshToken(refreshToken);
-  let user = authDao.getByColumnName('id', userId);
+export function getNewAccessAndRefreshToken(oldRefreshToken) {
+  let user = verifyRefreshToken(oldRefreshToken);
 
-  if (!user) {
-    throw new Boom.unauthorized('User not found');
-  }
+  return sessionService
+    .getSession(user.userId, oldRefreshToken)
+    .then(session => {
+      if (!session) {
+        throw new Boom.unauthorized('Unauthorized');
+      }
 
-  return getAccessAndRefreshTokens(user);
+      let responsePayload = getAccessAndRefreshTokens(user.userId);
+      sessionService.updateSession(user.userId, responsePayload, oldRefreshToken);
+
+      return responsePayload;
+    })
+    .catch(() => {
+      throw new Boom.unauthorized('Unauthorized');
+    });
 }
 
 /**
  * Validate JWT token.
  * @param {string} token
  */
-function verifyToken(tokenWithPrefix, secretKey) {
+function verifyToken(token, secretKey) {
   try {
-    let token = tokenWithPrefix.split(' ')[1];
-
     return jwtUtils.verifyToken(token, secretKey);
   } catch (error) {
     throw new Boom.unauthorized('Unauthorized Access');
@@ -76,21 +85,13 @@ function verifyToken(tokenWithPrefix, secretKey) {
  * Construct object with access token, refresh token and userId.
  * @param {User} user
  */
-function getAccessAndRefreshTokens(user) {
-  let accessToken = jwtUtils.createToken(
-    { userId: user.get('id') },
-    jwtConfigs.SECRET_ACCESS_KEY,
-    jwtConfigs.ACCESS_TOKEN_CONFIG
-  );
-  let refreshToken = jwtUtils.createToken(
-    { userId: user.get('id') },
-    jwtConfigs.SECRET_REFRESH_KEY,
-    jwtConfigs.REFRESH_TOKEN_CONFIG
-  );
+function getAccessAndRefreshTokens(userId) {
+  let accessToken = jwtUtils.createToken({ userId }, jwtConfigs.SECRET_ACCESS_KEY, jwtConfigs.ACCESS_TOKEN_CONFIG);
+  let refreshToken = jwtUtils.createToken({ userId }, jwtConfigs.SECRET_REFRESH_KEY, jwtConfigs.REFRESH_TOKEN_CONFIG);
 
   return {
     accessToken,
     refreshToken,
-    userId: user.get('id')
+    userId
   };
 }
