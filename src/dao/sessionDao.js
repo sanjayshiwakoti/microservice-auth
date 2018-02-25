@@ -20,11 +20,11 @@ export function updateSession(userId, responsePayload, oldRefreshToken) {
   return new Session()
     .where({
       user_id: userId,
-      refresh_token: responsePayload.refreshToken
+      refresh_token: oldRefreshToken
     })
     .save(
       {
-        refreshToken: oldRefreshToken
+        refreshToken: responsePayload.refreshToken
       },
       { patch: true, require: false }
     )
