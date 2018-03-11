@@ -12,8 +12,8 @@ let Session = bookshelf.Model.extend({
 
   hasTimestamps: true,
 
-  createdBy: function() {
-    return this.belongsTo(User, 'created_by');
+  user: function() {
+    return this.belongsTo(User, 'user_id');
   }
 });
 

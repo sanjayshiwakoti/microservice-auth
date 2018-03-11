@@ -6,8 +6,27 @@ export function saveSession(session) {
     refreshToken: session.refreshToken,
     expireTime: session.expireTime,
     status: session.status,
-    createdBy: session.createdBy
+    userId: session.userId
   })
-    .save()
-    .then(data => data);
+    .save(null, { method: 'insert' })
+    .then(data => data.refresh());
+}
+
+export function getSession(userId, refreshToken) {
+  return new Session({ userId, refreshToken }).fetch().then(data => data.refresh());
+}
+
+export function updateSession(userId, responsePayload, oldRefreshToken) {
+  return new Session()
+    .where({
+      user_id: userId,
+      refresh_token: oldRefreshToken
+    })
+    .save(
+      {
+        refreshToken: responsePayload.refreshToken
+      },
+      { patch: true, require: false }
+    )
+    .then(data => data.refresh());
 }
