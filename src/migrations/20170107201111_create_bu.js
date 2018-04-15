@@ -5,18 +5,17 @@
  * @return {Promise}
  */
 export function up(knex) {
-  return knex.schema.createTable('auth_users', table => {
+  return knex.schema.createTable('auth_business_unit', table => {
     table.uuid('id').primary();
     table
       .timestamp('created_at')
       .notNull()
       .defaultTo(knex.raw('now()'));
     table.timestamp('updated_at').notNull();
-    table.string('username').notNull();
-    table.string('password').notNull();
-    table.uuid('business_unit_id');
+    table.string('business_unit_name').notNull();
+    table.uuid('parent_bu_id');
     table
-      .foreign('business_unit_id')
+      .foreign('parent_bu_id')
       .references('id')
       .on('auth_business_unit');
   });
