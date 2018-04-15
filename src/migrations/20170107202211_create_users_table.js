@@ -14,11 +14,7 @@ export function up(knex) {
     table.timestamp('updated_at').notNull();
     table.string('username').notNull();
     table.string('password').notNull();
-    table.uuid('business_unit_id');
-    table
-      .foreign('business_unit_id')
-      .references('id')
-      .on('auth_business_unit');
+    table.enu('status', ['ACTIVE', 'INACTIVE']).defaultTo('INACTIVE');
   });
 }
 
@@ -29,5 +25,5 @@ export function up(knex) {
  * @return {Promise}
  */
 export function down(knex) {
-  return knex.schema.dropTable('users');
+  return knex.schema.dropTable('auth_users');
 }
