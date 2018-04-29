@@ -12,7 +12,7 @@ import * as jwtConfigs from '../configs/jwtConfig';
  */
 export async function validateLogin(username, password, slug) {
   let user = await authDao.getByUsernameAndBU(username, slug);
-  
+
   if (!user) {
     throw new Boom.unauthorized('Invalid Credentials');
   }
@@ -46,10 +46,11 @@ export async function getUsersBusinessUnits(userId) {
  * Validate access token.
  * @param {string} accessToken
  */
-export function verifyAccessToken(tokenWithPrefix) {
+export async function verifyAccessToken(tokenWithPrefix) {
   let token = tokenWithPrefix.split(' ')[1];
 
-  return verifyToken(token, jwtConfigs.SECRET_ACCESS_KEY);
+  let userPayload = verifyToken(token, jwtConfigs.SECRET_ACCESS_KEY);
+  return await authDao.getByColumnName('id',userPayload.userId);
 }
 
 /**

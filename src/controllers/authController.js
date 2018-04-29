@@ -11,7 +11,7 @@ router.post('/login', async (req, res, next) => {
   try {
     console.log(req.body);
     let data = await authService.validateLogin(req.body.username, req.body.password, req.body.slug);
-    
+
     res.json({ data });
   } catch (error) {
     next(error);
@@ -22,7 +22,7 @@ router.post('/login', async (req, res, next) => {
  * Validate access token.
  */
 router.post('/authenticate', (req, res, next) => {
-  res.json({ data: authService.verifyAccessToken(req.body.accessToken) });
+  authService.verifyAccessToken(req.body.accessToken).then(data => res.json(data));
 });
 
 /**
