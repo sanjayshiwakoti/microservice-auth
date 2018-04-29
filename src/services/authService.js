@@ -21,6 +21,7 @@ export async function validateLogin(username, password, slug) {
     let responsePayload = getAccessAndRefreshTokens(user.get('id'));
     sessionService.saveSession(responsePayload, user.get('id'));
     responsePayload['user'] = user;
+
     return responsePayload;
   } else {
     throw new Boom.unauthorized('Invalid Credentials');
@@ -47,10 +48,15 @@ export async function getUsersBusinessUnits(userId) {
  * @param {string} accessToken
  */
 export async function verifyAccessToken(tokenWithPrefix) {
-  let token = tokenWithPrefix.split(' ')[1];
+  let [bearer, accessToken] = tokenWithPrefix.split(' ');
 
-  let userPayload = verifyToken(token, jwtConfigs.SECRET_ACCESS_KEY);
-  return await authDao.getByColumnName('id',userPayload.userId);
+  if (accessToken == undefined) {
+    throw new Boom.unauthorized('Unauthorized');
+  }
+
+  let userPayload = verifyToken(accessToken, jwtConfigs.SECRET_ACCESS_KEY);
+
+  return await authDao.getByColumnName('id', userPayload.userId);
 }
 
 /**
