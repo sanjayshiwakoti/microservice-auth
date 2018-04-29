@@ -1,5 +1,6 @@
 import bookshelf from '../db';
 import Session from './Session';
+import BusinessUnits from './BusinessUnits';
 
 const TABLE_NAME = 'auth_users';
 
@@ -14,6 +15,9 @@ let User = bookshelf.Model.extend({
 
   sessions: function() {
     return this.hasMany(Session);
+  },
+  business_unit_id: function() {
+    return this.belongsToMany(BusinessUnits, 'auth_users_business_units', 'user_id', 'business_unit_id');
   }
 });
 

@@ -12,9 +12,11 @@ export function up(knex) {
       .notNull()
       .defaultTo(knex.raw('now()'));
     table.timestamp('updated_at').notNull();
+    table.string('slug').notNull();
     table.string('username').notNull();
     table.string('password').notNull();
     table.enu('status', ['ACTIVE', 'INACTIVE']).defaultTo('INACTIVE');
+    table.unique(['slug', 'username'])
   });
 }
 

@@ -10,9 +10,9 @@ import * as jwtConfigs from '../configs/jwtConfig';
  * @param {string} username
  * @param {string} password
  */
-export async function validateLogin(username, password) {
-  let user = await authDao.getByUsername(username);
-
+export async function validateLogin(username, password, slug) {
+  let user = await authDao.getByUsernameAndBU(username, slug);
+  
   if (!user) {
     throw new Boom.unauthorized('Invalid Credentials');
   }
@@ -20,11 +20,26 @@ export async function validateLogin(username, password) {
   if (hashUtils.compare(password, user.get('password'))) {
     let responsePayload = getAccessAndRefreshTokens(user.get('id'));
     sessionService.saveSession(responsePayload, user.get('id'));
-
+    responsePayload['user'] = user;
     return responsePayload;
   } else {
     throw new Boom.unauthorized('Invalid Credentials');
   }
+}
+
+/**
+ * Validate login.
+ * @param {string} username
+ * @param {string} password
+ */
+export async function getUsersBusinessUnits(userId) {
+  let usersBusinessUnits = await authDao.getUsersBusinessUnits(userId);
+
+  if (!usersBusinessUnits) {
+    throw new Boom.notFound('Invalid UserID');
+  }
+
+  return usersBusinessUnits;
 }
 
 /**
