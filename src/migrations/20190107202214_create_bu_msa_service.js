@@ -14,6 +14,7 @@ export function up(knex) {
     table.timestamp('updated_at').notNull();
     table.uuid('business_unit_id').notNull();
     table.uuid('msa_service_id').notNull();
+    table.string('image_name').notNull();
     table.uuid('created_by').notNull();
     table.enu('status', ['ACTIVE', 'INACTIVE']).defaultTo('INACTIVE');
     table
