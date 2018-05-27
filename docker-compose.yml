@@ -6,7 +6,7 @@ services:
     #build: .
     volumes:
       - ./:/app/
-      - .env.docker:/app/.env
+      - .env:/app/.env
     ports:
       - "8001"
     entrypoint: /bin/sh
