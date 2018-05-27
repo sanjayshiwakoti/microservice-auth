@@ -8,10 +8,10 @@ import uuid from 'uuid/v4';
  */
 export function seed(knex, Promise) {
   // Deletes all existing entries
-  return knex('auth_users_business_units').then(() => {
+  return knex('auth_msa_service').then(() => {
     return Promise.all([
       // Inserts seed entries
-      knex('auth_users_business_units').insert([
+      knex('auth_msa_service').insert([
         {
           id: uuid(),
           service_name: 'msa-common-gateway',
