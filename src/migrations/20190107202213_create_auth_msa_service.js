@@ -8,6 +8,8 @@ export function up(knex) {
   return knex.schema.createTable('auth_msa_service', table => {
     table.uuid('id').primary();
     table.string('service_name').notNull();
+    table.string('git_url').notNull();
+    table.string('tag_name').notNull();
     table
       .boolean('is_service_mandatory')
       .defaultTo(1)
