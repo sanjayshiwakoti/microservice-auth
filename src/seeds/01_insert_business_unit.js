@@ -13,8 +13,8 @@ export function seed(knex, Promise) {
       knex('auth_business_units').insert([
         {
           id: 'c80185b3-058c-4360-85b1-bff2da8ea571',
-          business_unit_name: 'Rosia',
-          business_unit_url: 'http://udn.microservice.com',
+          business_unit_name: 'MSA',
+          business_unit_url: 'http://lf.microservice.com',
           status: 'ACTIVE',
           parent_bu_id: null,
           created_at: new Date(),
