@@ -15,6 +15,8 @@ export function seed(knex, Promise) {
         {
           id: uuid(),
           service_name: 'msa-common-gateway',
+          git_url: 'for automation',
+          tag_name: '1.0',
           is_service_mandatory: 1,
           status: 'ACTIVE',
           created_at: new Date(),
@@ -23,6 +25,8 @@ export function seed(knex, Promise) {
         {
           id: uuid(),
           service_name: 'msa-auth',
+          git_url: 'for automation',
+          tag_name: '1.0',
           is_service_mandatory: 1,
           status: 'ACTIVE',
           created_at: new Date(),
@@ -31,6 +35,8 @@ export function seed(knex, Promise) {
         {
           id: uuid(),
           service_name: 'msa-gateway',
+          git_url: 'for automation',
+          tag_name: '1.0',
           is_service_mandatory: 0,
           status: 'ACTIVE',
           created_at: new Date(),
@@ -39,6 +45,8 @@ export function seed(knex, Promise) {
         {
           id: uuid(),
           service_name: 'msa-transaction',
+          git_url: 'for automation',
+          tag_name: '1.0',
           is_service_mandatory: 0,
           status: 'ACTIVE',
           created_at: new Date(),
